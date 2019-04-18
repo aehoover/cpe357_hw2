@@ -1,0 +1,58 @@
+Ashley E. Hoover
+Course: CPE357
+Instructor: Professor Planck
+
+General Program Structure: 
+=========================
+( note, I have decided to change my program structure from my original idea, after giving it more thought )
+
+My program data will be stored in structures called nodes. Each node will have an ID ( an integer value that corresponds to their position in the tree ), a "string" type ( either question or animal ), and a "string" data ( the information entered by the user ). These nodes will be stored in an array, and will be dynamically allocated. In order to save memory, node ID numbers will not correspond to array indicies. I will also dynamically allocate the array to hold the nodes, and will leave at least a little extra space for the user to add questions and animals as the program runs. If uses up this space realloc will be used.
+
+When Program Starts:
+===================
+
+Need to...
+
+open qa.db for reading, prompting the creation of the database if it doesn't exist
+
+read the file line by line, each line will be passed to the add node function, which will dynamically allocate the new node and return a pointer to it.
+
+each node will be placed into the dynamically allocated array, which will be resized as necessary using realloc
+
+once the tree building has finished, the file will be closed and the game will start
+
+After a win or loss, the program will desplay the appropriate message and then open the qa.db file for writing.
+
+Since the nodes will be sorted in ascending order by ID, the program will cycle through the array one node at a time and write the information to the file one line at a time
+
+once finished, the program ends
+
+File Structure:
+==============
+
+While the program is running, the information will be stored in the nodes and in the array. Before the program ends, the tree will be written to the file. It will either overwrite the file from a previous program run or create it for the first time. Data will be stored in the following format:
+
+0QDoes it hunt mice?\n
+1Aa dog\n
+2QIs it furry?\n
+5Aa snake?\n
+6Aa cat?\n
+...etc.
+
+The ID number of the node will be printed in front of each line, it will be immediatly followed by either a captital A or Q ( to represent what type of node it will be ).  
+
+The nodes will be written to the file in level order by ID number. Nodes that do not exist will be omitted. In the example above the dog node has no children, which would be nodes three and four. So, the next node, snake, is node five.
+
+Functions:
+=========
+
+functions to determine what the left and right child of a node is
+search
+sort - into ascending order by id number
+add node
+free memory
+update data file
+build tree
+readline - from lab 3
+ask - takes a node and asks the user a question, returns yes or no
+possibly a print tree function, for testing
