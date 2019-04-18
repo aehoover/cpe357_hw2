@@ -25,7 +25,7 @@ Node * createNode( char *string );
 allocates a new node and fills in its member variables, then returns a
 pointer to that node. If the line passed to it is NULL, returns NULL */
 
-void buildTree( FILE * file, Node **arr );
+void buildTree( FILE * file, Node **arr, int arrSize );
 /* */
 
 void printTree( Node **arr );

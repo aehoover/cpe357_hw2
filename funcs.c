@@ -120,7 +120,7 @@ Node * createNode( char *string )
 	return newNode;
 }
 
-void buildTree( FILE * file, Node **arr ) /* Doesn't account for resizing tree */
+void buildTree( FILE * file, Node **arr, int arrSize )
 {
 	char *lineFromFile = NULL;
 	int i = 0;
@@ -128,6 +128,25 @@ void buildTree( FILE * file, Node **arr ) /* Doesn't account for resizing tree *
 	while ( ( lineFromFile = readline( file ) ) != NULL )
 	{
 		Node *newNode = createNode( lineFromFile );
+
+		if ( i == arrSize )
+		{
+			int j = i;
+			arr = realloc( arr, ( sizeof( arrSize ) * 2 ) );
+			arrSize *= 2;
+
+			if ( arr == NULL )
+			{
+				printf( "realloc failed.\n" );
+				exit( 1 );
+			}
+
+			for ( j = j; j < arrSize * 2; j++ )
+			{
+				arr[j] = NULL;
+			}
+		}
+
 		arr[i] = newNode;
 		i++;
 	}

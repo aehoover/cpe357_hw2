@@ -17,7 +17,7 @@ int main()
 
 	for ( i = 0; i < INITIAL_SIZE; i++ )
 	{
-		tree[i] = '\0';
+		tree[i] = NULL;
 	}
 
 	if ( tree == NULL )
@@ -38,7 +38,7 @@ int main()
 	{
 		/* Code to read in from the file and build the tree */
 
-		buildTree( file, tree );
+		buildTree( file, tree, INITIAL_SIZE );
 		printTree( tree );
 
 	}
