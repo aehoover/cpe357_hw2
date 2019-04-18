@@ -120,7 +120,7 @@ Node * createNode( char *string )
 	return newNode;
 }
 
-void buildTree( FILE * file, Node **arr, int arrSize )
+void buildTree( FILE * file, Node **arr, int arrSize, int *numNodes )
 {
 	char *lineFromFile = NULL;
 	int i = 0;
@@ -128,6 +128,11 @@ void buildTree( FILE * file, Node **arr, int arrSize )
 	while ( ( lineFromFile = readline( file ) ) != NULL )
 	{
 		Node *newNode = createNode( lineFromFile );
+
+		if ( newNode != NULL )
+		{
+			( *numNodes )++;
+		}
 
 		if ( i == arrSize )
 		{
@@ -167,4 +172,42 @@ void printTree( Node **arr )
 		i++;
 	}
 
+}
+
+int findLeftChild( int nodeID )
+{
+	int leftChild = ( nodeID * 2 ) + 1;
+
+	return leftChild;
+}
+
+int findRightChild( int nodeID )
+{
+	int rightChild = ( nodeID * 2 ) + 2;
+
+	return rightChild;
+}
+
+void ask( int nodeID, Node *tree, int numNodes )
+{
+	Node *current = searchByID( nodeID, tree, numNodes );
+
+
+}
+
+Node * searchByID( int nodeID, Node **tree, int numNodes )
+{
+	int i;
+	Node *target = NULL;
+
+	for ( i = 0; i < numNodes; i++ )
+	{
+		if ( tree[i]->ID == nodeID )
+		{
+			target = tree[i];
+			break;
+		}
+	}
+
+	return target;
 }

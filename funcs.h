@@ -25,8 +25,21 @@ Node * createNode( char *string );
 allocates a new node and fills in its member variables, then returns a
 pointer to that node. If the line passed to it is NULL, returns NULL */
 
-void buildTree( FILE * file, Node **arr, int arrSize );
+void buildTree( FILE * file, Node **arr, int arrSize, int *numNodes );
 /* */
 
 void printTree( Node **arr );
+/* Takes a pointer to an array of Node pointers ( the tree ) and prints
+the Nodes in numerical order by ID. For use in testing. */
+
+int findLeftChild( int nodeID );
+/* Takes a nodeID and returns the ID of that node's left child */
+
+int findRightChild( int nodeID );
+/* Takes a nodeID and returns the ID of that node's right child */
+
+void ask( int nodeID, Node *tree, int numNodes );
+/* */
+
+Node * searchByID( int nodeID, Node **tree, int numNodes );
 /* */

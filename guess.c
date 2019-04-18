@@ -14,6 +14,8 @@ int main()
 	Node **tree = malloc( sizeof( Node * ) * INITIAL_SIZE );
 	FILE *file;
 	int i;
+	int player_wins = FALSE;
+	int numNodes = 0;
 
 	for ( i = 0; i < INITIAL_SIZE; i++ )
 	{
@@ -38,12 +40,19 @@ int main()
 	{
 		/* Code to read in from the file and build the tree */
 
-		buildTree( file, tree, INITIAL_SIZE );
+		buildTree( file, tree, INITIAL_SIZE, &numNodes );
 		printTree( tree );
-
 	}
 
+	/* ////////// LOGIC FOR GUESSING GAME ////////////////////////////// */
+
 	fclose( file );
+
+	if ( tree[0] )
+	{
+		/* ask questions */
+
+	}
 
 	return 0;
 }
