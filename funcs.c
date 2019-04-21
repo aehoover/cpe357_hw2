@@ -169,6 +169,7 @@ void printTree( Node **arr )
 		printf( "\nNode: %d\n", arr[i]->ID );
 		printf( "Type: %c\n", arr[i]->type );
 		printf( "%s\n", arr[i]->data );
+		printf( "Index: %d\n", i );
 		i++;
 	}
 
@@ -188,13 +189,6 @@ int findRightChild( int nodeID )
 	return rightChild;
 }
 
-void ask( int nodeID, Node *tree, int numNodes )
-{
-	Node *current = searchByID( nodeID, tree, numNodes );
-
-
-}
-
 Node * searchByID( int nodeID, Node **tree, int numNodes )
 {
 	int i;
@@ -210,4 +204,64 @@ Node * searchByID( int nodeID, Node **tree, int numNodes )
 	}
 
 	return target;
+}
+
+char * input()
+{
+	int size = 101;
+	char c = '\0';
+	int i = 0;
+	char *inputPtr = NULL;
+	inputPtr = malloc( sizeof( char ) * size );
+
+	if ( inputPtr == NULL )
+	{
+		printf( "malloc has failed.\n" );
+		exit( 1 );
+	}
+
+	while ( TRUE )
+	{
+		c = getchar();
+
+		if ( i == size )
+		{
+			size *= 2;
+			inputPtr = realloc( inputPtr, sizeof( char ) * size );
+
+			if ( inputPtr == NULL )
+			{
+				printf( "realloc has failed.\n" );
+				exit( 1 );
+			}
+		}
+
+		if ( c == '\n' )
+		{
+			inputPtr[i] = '\0';
+			break;
+		}
+		else
+		{
+			inputPtr[i] = c;
+		}
+
+		i++;
+	}
+
+	return inputPtr;
+}
+
+void clearInput( char *inputString )
+{
+	int i;
+	int len = strlen( inputString );
+
+	for ( i = 0; i < len; i++ )
+	{
+		inputString[i] = '\0';
+	}
+
+	free( inputString );
+
 }

@@ -38,8 +38,13 @@ int findLeftChild( int nodeID );
 int findRightChild( int nodeID );
 /* Takes a nodeID and returns the ID of that node's right child */
 
-void ask( int nodeID, Node *tree, int numNodes );
+Node * searchByID( int nodeID, Node **tree, int numNodes );
+/* Takes the ID number of a node to search for, the tree of node pointers,
+which is an array, and the total number of nodes in the tree. Returns a
+pointer to the node if found, returns NULL otherwise */
+
+char * input();
 /* */
 
-Node * searchByID( int nodeID, Node **tree, int numNodes );
+void clearInput( char *inputString );
 /* */
