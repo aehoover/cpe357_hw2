@@ -12,13 +12,14 @@ Assignment #: 2
 char * readline( FILE * file )
 {
 	int size = INITIAL_SIZE;
-	char *oneLine = malloc( sizeof( char ) * size );
+	char *oneLine = ( char * ) malloc( sizeof( char ) * size );
 	char c;
 	int i = 0;
 
 	if ( oneLine == NULL )
 	{
 		printf("malloc has failed.\n" );
+		exit( 1 );
 	}
 
 	for ( i = 0; i < size; i++ )
@@ -86,7 +87,12 @@ Node * createNode( char *string )
 	Node *newNode = ( Node* ) malloc( sizeof( Node ) );
 	int i = 0;
 
-	if ( string == NULL )
+	if ( newNode == NULL )
+	{
+		printf( "malloc has failed.\n" );
+		exit( 1 );
+	}
+	else if ( string == NULL )
 	{
 		free( newNode );
 		newNode = NULL;
@@ -104,15 +110,27 @@ Node * createNode( char *string )
  		letter_location = i;
  		
 		ID_Nums = ( char * ) malloc( sizeof( char ) * ( i + 1 ) );
+
+		if ( ID_Nums == NULL )
+		{
+			printf( "malloc has failed.\n" );
+			exit( 1 );
+		}
 		
 		for ( i = 0; i < letter_location; i++ )
 		{
 			ID_Nums[i] = string[i];
 		}
 
+		ID_Nums[i] = '\0';
+
 		newNode->ID = atoi( ID_Nums );
 		newNode->type = string[i];
+		newNode->freePtr = string;
 		newNode->data = &( string[letter_location + 1] );
+		/*strcpy( newNode->data, &( string[letter_location + 1] ) );*/
+
+		/*printf( "ID is %s\n", ID_Nums ); */
 
 		free( ID_Nums );
 	}
@@ -120,7 +138,7 @@ Node * createNode( char *string )
 	return newNode;
 }
 
-void buildTree( FILE * file, Node **arr, int arrSize, int *numNodes )
+void buildTree( FILE * file, Node **arr, int *arrSize, int *numNodes )
 {
 	char *lineFromFile = NULL;
 	int i = 0;
@@ -134,11 +152,11 @@ void buildTree( FILE * file, Node **arr, int arrSize, int *numNodes )
 			( *numNodes )++;
 		}
 
-		if ( i == arrSize )
+		if ( i == *arrSize )
 		{
 			int j = i;
-			arr = realloc( arr, ( sizeof( arrSize ) * 2 ) );
-			arrSize *= 2;
+			arr = realloc( arr, ( sizeof( *arrSize ) * 2 ) );
+			*arrSize *= 2;
 
 			if ( arr == NULL )
 			{
@@ -146,7 +164,7 @@ void buildTree( FILE * file, Node **arr, int arrSize, int *numNodes )
 				exit( 1 );
 			}
 
-			for ( j = j; j < arrSize * 2; j++ )
+			for ( j = j; j < *arrSize * 2; j++ )
 			{
 				arr[j] = NULL;
 			}
@@ -212,7 +230,7 @@ char * input()
 	char c = '\0';
 	int i = 0;
 	char *inputPtr = NULL;
-	inputPtr = malloc( sizeof( char ) * size );
+	inputPtr = ( char * ) malloc( sizeof( char ) * size );
 
 	if ( inputPtr == NULL )
 	{
@@ -263,5 +281,24 @@ void clearInput( char *inputString )
 	}
 
 	free( inputString );
+
+}
+
+void freeTree( Node *tree[], int numNodes )
+{
+	int i;
+
+	for ( i = 0; i < numNodes; i++ )
+	{
+		/*free( &( tree[i]->data )[-2] );*/
+		if ( tree[i]->freePtr != NULL )
+		{
+			free( tree[i]->freePtr );
+		}
+
+		free( tree[i] );
+	}
+
+	free( tree );
 
 }

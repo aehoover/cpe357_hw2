@@ -23,6 +23,21 @@ void test_createNode2()
    checkit_int( nodePtr, 0 );
 }
 
+void test_readline()
+{
+   FILE *fp = fopen( "qa.db", "r" );
+
+   if ( !fp )
+   {
+      printf( "File couldn't be opened\n" );
+   }
+   else
+   {
+      
+
+   }
+}
+
 int main(void)
 {
    test_createNode();

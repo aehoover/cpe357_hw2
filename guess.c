@@ -12,23 +12,24 @@ Assignment #: 2
 
 int main()
 {
-	Node **tree = malloc( sizeof( Node * ) * INITIAL_SIZE );
+	Node **tree = ( Node ** ) malloc( sizeof( Node * ) * INITIAL_SIZE );
 	FILE *file;
 	int i;
 	int computer_wins = FALSE;
 	int numNodes = 0;
 	char *userInput = NULL;
 	Node *current = NULL;
-
-	for ( i = 0; i < INITIAL_SIZE; i++ )
-	{
-		tree[i] = NULL;
-	}
+	int treeSize = INITIAL_SIZE;
 
 	if ( tree == NULL )
 	{
 		printf( "Error, not enough space for tree \n" );
 		exit( 1 );
+	}
+
+	for ( i = 0; i < INITIAL_SIZE; i++ )
+	{
+		tree[i] = NULL;
 	}
 
 	file = fopen( "qa.db", "r" );
@@ -43,7 +44,8 @@ int main()
 	{
 		/* Code to read in from the file and build the tree */
 
-		buildTree( file, tree, INITIAL_SIZE, &numNodes );
+		buildTree( file, tree, &treeSize, &numNodes );
+		/*printTree( tree ); */
 	}
 
 	/* ////////// LOGIC FOR GUESSING GAME ////////////////////////////// */
@@ -102,7 +104,6 @@ int main()
 
 			if ( userInput[0] == 'y' || userInput[0] == 'Y' )
 			{
-				printf( "yes\n" );
 				computer_wins = TRUE;
 			}
 
@@ -115,17 +116,63 @@ int main()
 	if ( computer_wins )
 	{
 		/* Print victory message */
-
 		printf( "My, am I clever. :) Thanks for playing.\n" );
 	}
 	else
 	{
+		char *animalString = NULL;
+		char *newQuestion = NULL;
+		char *answer = NULL;
+		Node *questNode = ( Node* ) malloc( sizeof( Node ) );
+		Node *animalNode = ( Node* ) malloc( sizeof( Node ) );
+
+		if ( questNode == NULL || animalNode == NULL )
+		{
+			printf( "A malloc has failed.\n" );
+			exit( 1 );
+		}
+
 		/* Add new animal and question nodes */
 		printf( "How disapointing.\n" );
+		printf( "What is it (with article)?\n" );
+
+		animalString = input();
+
+		printf( "What is a yes/no question that will distinguish %s from %s \n", animalString, current->data );
+
+		newQuestion = input();
+
+		printf( "What is the answer to the question for %s?\n", animalString );
+
+		answer = input();
+
+		questNode->ID = current->ID;
+		questNode->data = newQuestion;
+		questNode->freePtr = NULL;
+		/*strcpy( questNode->data, newQuestion );*/
+		questNode->type = 'Q';
+
+		if ( answer[0] == 'y' || answer[0] == 'Y' )
+		{
+			current->ID = findLeftChild( questNode->ID );
+			animalNode->ID = findRightChild( questNode->ID );
+		}
+		else
+		{
+			current->ID = findRightChild( questNode->ID );
+			animalNode->ID = findLeftChild( questNode->ID );
+		}
+
+		animalNode->data = animalString;
+		/*strcpy( animalNode->data, animalString );*/
+		animalNode->type = 'A';
+		animalNode->freePtr = NULL;
 	}
 
 	/* Game over. Open file for writing and write updated tree
 	to the file. Close file and exit porgram. */
+
+	freeTree( tree, numNodes );
 
 	return 0;
 }

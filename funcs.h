@@ -6,13 +6,14 @@ Assignment #: 2
 ///////////////////////// */ 
 #define TRUE 1
 #define FALSE 0
-#define INITIAL_SIZE 100
+#define INITIAL_SIZE 101
 
 typedef struct Node
 {
 	int ID;
 	char type;
 	char *data;
+	char *freePtr;
 
 } Node; 
 
@@ -25,7 +26,7 @@ Node * createNode( char *string );
 allocates a new node and fills in its member variables, then returns a
 pointer to that node. If the line passed to it is NULL, returns NULL */
 
-void buildTree( FILE * file, Node **arr, int arrSize, int *numNodes );
+void buildTree( FILE * file, Node **arr, int *arrSize, int *numNodes );
 /* */
 
 void printTree( Node **arr );
@@ -47,4 +48,7 @@ char * input();
 /* */
 
 void clearInput( char *inputString );
+/* */
+
+void freeTree( Node *tree[], int numNodes );
 /* */
