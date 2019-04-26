@@ -300,5 +300,33 @@ void freeTree( Node *tree[], int numNodes )
 	}
 
 	free( tree );
+}
 
+void writeTree( FILE * file, Node **arr, int numNodes )
+{
+	int i;
+	char *strPtr;
+
+	for ( i = 0; i < numNodes; i++ )
+	{
+		int ID = arr[i]->ID;
+		char type = arr[i]->type;
+		int j = 0;
+
+		/*putc( itoa( ID ,strPtr, 10 ), file );*/
+		putc( type, file );
+
+		while ( ( arr[i]->data )[j] != '\0' )
+		{
+			putc( ( arr[i]->data )[j], file );
+			j++;
+		}
+	}
+}
+
+char * intToString( int num )
+{
+	int r = 0;
+
+	
 }

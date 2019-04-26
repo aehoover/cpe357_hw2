@@ -13,7 +13,7 @@ Assignment #: 2
 int main()
 {
 	Node **tree = ( Node ** ) malloc( sizeof( Node * ) * INITIAL_SIZE );
-	FILE *file;
+	FILE *file, *outFile;
 	int i;
 	int computer_wins = FALSE;
 	int numNodes = 0;
@@ -138,39 +138,66 @@ int main()
 
 		animalString = input();
 
-		printf( "What is a yes/no question that will distinguish %s from %s \n", animalString, current->data );
-
-		newQuestion = input();
-
-		printf( "What is the answer to the question for %s?\n", animalString );
-
-		answer = input();
-
-		questNode->ID = current->ID;
-		questNode->data = newQuestion;
-		questNode->freePtr = NULL;
-		/*strcpy( questNode->data, newQuestion );*/
-		questNode->type = 'Q';
-
-		if ( answer[0] == 'y' || answer[0] == 'Y' )
+		if ( current != NULL )
 		{
-			current->ID = findLeftChild( questNode->ID );
-			animalNode->ID = findRightChild( questNode->ID );
-		}
+			printf( "What is a yes/no question that will distinguish %s from %s \n", animalString, current->data );
+
+			newQuestion = input();
+			questNode->ID = current->ID;
+			questNode->type = 'Q';
+			questNode->data = newQuestion;
+
+			printf( "What is the answer to the question for %s?\n", current->data );
+
+			if ( numNodes >= treeSize - 2 )
+			{
+				treeSize *= 2;
+				tree = realloc( tree, sizeof( Node * ) * treeSize );
+			}
+
+			tree[numNodes] = questNode;
+			numNodes++;
+
+			if ( answer[0] == 'y' || answer[0] == 'Y' )
+			{
+				current->ID = findLeftChild( questNode->ID );
+				animalNode->ID = findRightChild( questNode->ID );
+			}
+			else
+			{
+				current->ID = findRightChild( questNode->ID );
+				animalNode->ID = findLeftChild( questNode->ID );
+			}
+
+			animalNode->data = animalString;
+			/*strcpy( animalNode->data, animalString );*/
+			animalNode->type = 'A';
+			animalNode->freePtr = animalString;
+
+			tree[numNodes] = animalNode;
+			numNodes++;
+
+			}
 		else
 		{
-			current->ID = findRightChild( questNode->ID );
-			animalNode->ID = findLeftChild( questNode->ID );
+			animalNode->ID = 0;
+			animalNode->type = 'A';
+			animalNode->data = animalString;
+
+			tree[numNodes] = animalNode;
+			numNodes++;
 		}
 
-		animalNode->data = animalString;
-		/*strcpy( animalNode->data, animalString );*/
-		animalNode->type = 'A';
-		animalNode->freePtr = NULL;
+		
 	}
 
 	/* Game over. Open file for writing and write updated tree
 	to the file. Close file and exit porgram. */
+
+	/*printTree( tree );*/
+
+	outFile = fopen( "qa.db", "w" );
+	writeTree( outFile, tree, numNodes );
 
 	freeTree( tree, numNodes );
 

@@ -52,3 +52,9 @@ void clearInput( char *inputString );
 
 void freeTree( Node *tree[], int numNodes );
 /* */
+
+void writeTree( FILE * file, Node **arr, int numNodes );
+/* */
+
+char * intToString( int num );
+/* */
