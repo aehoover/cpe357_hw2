@@ -97,42 +97,15 @@ Node * createNode( char *string )
 		free( newNode );
 		newNode = NULL;
 	}
+	else if ( string[0] == 'N' )
+	{
+		newNode->type = 'N';
+	}
 	else
 	{
-		int letter_location = 0;
-		char *ID_Nums;
-
-		while( string[i] != 'Q' && string[i] != 'A' )
-		{
-			i++;
-		}
-
- 		letter_location = i;
- 		
-		ID_Nums = ( char * ) malloc( sizeof( char ) * ( i + 1 ) );
-
-		if ( ID_Nums == NULL )
-		{
-			printf( "malloc has failed.\n" );
-			exit( 1 );
-		}
-		
-		for ( i = 0; i < letter_location; i++ )
-		{
-			ID_Nums[i] = string[i];
-		}
-
-		ID_Nums[i] = '\0';
-
-		newNode->ID = atoi( ID_Nums );
-		newNode->type = string[i];
+		newNode->type = string[0];
 		newNode->freePtr = string;
-		newNode->data = &( string[letter_location + 1] );
-		/*strcpy( newNode->data, &( string[letter_location + 1] ) );*/
-
-		/*printf( "ID is %s\n", ID_Nums ); */
-
-		free( ID_Nums );
+		newNode->data = &( string[1] );
 	}
 
 	return newNode;
@@ -142,14 +115,23 @@ void buildTree( FILE * file, Node **arr, int *arrSize, int *numNodes )
 {
 	char *lineFromFile = NULL;
 	int i = 0;
+	int idCounter = 0;
 
 	while ( ( lineFromFile = readline( file ) ) != NULL )
 	{
 		Node *newNode = createNode( lineFromFile );
 
-		if ( newNode != NULL )
+		if ( newNode != NULL && ( newNode->type == 'Q' || newNode->type == 'A' ) )
 		{
 			( *numNodes )++;
+			newNode->ID = idCounter;
+			idCounter++;
+		}
+		else if ( newNode->type == 'N' )
+		{
+			free( newNode );
+			idCounter++;
+			continue;
 		}
 
 		if ( i == *arrSize )
@@ -306,20 +288,37 @@ void writeTree( FILE * file, Node **arr, int numNodes )
 {
 	int i;
 	char *strPtr;
+	int currentID = 0;
+	/*int end = arr[numNodes]->ID + 1;*/
 
-	for ( i = 0; i < numNodes; i++ )
+	printf( "num nodes %d\n", numNodes );
+
+	for ( i = 0; arr[i] != NULL ; i++ )
 	{
 		int ID = arr[i]->ID;
 		char type = arr[i]->type;
 		int j = 0;
 
-		/*putc( itoa( ID ,strPtr, 10 ), file );*/
-		putc( type, file );
-
-		while ( ( arr[i]->data )[j] != '\0' )
+		if ( ID != currentID )
 		{
-			putc( ( arr[i]->data )[j], file );
-			j++;
+			putc( 'N', file );
+			putc( '\n', file );
+			currentID++;
+			i--;
+			continue;
+		}
+		else
+		{
+			putc( type, file );
+
+			while ( ( arr[i]->data )[j] != '\0' )
+			{
+				putc( ( arr[i]->data )[j], file );
+				j++;
+			}
+
+			putc( '\n', file );
+			currentID++;
 		}
 	}
 }
@@ -328,5 +327,29 @@ char * intToString( int num )
 {
 	int r = 0;
 
-	
+
+}
+
+void sortTree( Node **tree, int numNodes )
+{
+	int i;
+	int swap_made;
+
+	do
+	{
+		swap_made = FALSE;
+
+		for ( i = 0; i < ( numNodes - 1 ); i++ )
+		{
+			if ( tree[i + 1]->ID < tree[i]->ID )
+			{
+				Node *temp = tree[i];
+				tree[i] = tree[i + 1];
+				tree[i + 1] = temp;
+
+				swap_made = TRUE;
+			}
+		}
+		
+	}while ( swap_made );
 }

@@ -45,7 +45,7 @@ int main()
 		/* Code to read in from the file and build the tree */
 
 		buildTree( file, tree, &treeSize, &numNodes );
-		/*printTree( tree ); */
+		/*printTree( tree );*/
 	}
 
 	/* ////////// LOGIC FOR GUESSING GAME ////////////////////////////// */
@@ -146,8 +146,11 @@ int main()
 			questNode->ID = current->ID;
 			questNode->type = 'Q';
 			questNode->data = newQuestion;
+			questNode->freePtr = newQuestion;
 
-			printf( "What is the answer to the question for %s?\n", current->data );
+			printf( "What is the answer to the question for %s?\n", animalString );
+
+			answer = input();
 
 			if ( numNodes >= treeSize - 2 )
 			{
@@ -187,17 +190,16 @@ int main()
 			tree[numNodes] = animalNode;
 			numNodes++;
 		}
-
-		
 	}
 
 	/* Game over. Open file for writing and write updated tree
 	to the file. Close file and exit porgram. */
 
-	/*printTree( tree );*/
+	sortTree( tree, numNodes );
 
 	outFile = fopen( "qa.db", "w" );
 	writeTree( outFile, tree, numNodes );
+	fclose( outFile );
 
 	freeTree( tree, numNodes );
 

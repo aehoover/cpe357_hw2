@@ -58,3 +58,6 @@ void writeTree( FILE * file, Node **arr, int numNodes );
 
 char * intToString( int num );
 /* */
+
+void sortTree( Node **tree, int numNodes );
+/* */
