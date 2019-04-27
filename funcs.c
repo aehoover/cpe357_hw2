@@ -85,7 +85,6 @@ char * readline( FILE * file )
 Node * createNode( char *string )
 {
 	Node *newNode = ( Node* ) malloc( sizeof( Node ) );
-	int i = 0;
 
 	if ( newNode == NULL )
 	{
@@ -287,11 +286,8 @@ void freeTree( Node *tree[], int numNodes )
 void writeTree( FILE * file, Node **arr, int numNodes )
 {
 	int i;
-	char *strPtr;
 	int currentID = 0;
 	/*int end = arr[numNodes]->ID + 1;*/
-
-	printf( "num nodes %d\n", numNodes );
 
 	for ( i = 0; arr[i] != NULL ; i++ )
 	{
@@ -321,13 +317,6 @@ void writeTree( FILE * file, Node **arr, int numNodes )
 			currentID++;
 		}
 	}
-}
-
-char * intToString( int num )
-{
-	int r = 0;
-
-
 }
 
 void sortTree( Node **tree, int numNodes )

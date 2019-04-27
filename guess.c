@@ -36,7 +36,8 @@ int main()
 
 	if ( !file )
 	{
-		printf( "Unable to read qa.db. Starting fresh.\n" );
+		printf( "qa.db: No such file or directory\n" );
+		printf( "Unable to read qa.db.  Starting fresh.\n" );
 
 		file = fopen( "qa.db", "w" );
 	}
@@ -97,7 +98,7 @@ int main()
 			computer wins, break. If no, computer
 			loses, move to add animal, break. */
 
-			printf( "Is it %s? \n", current->data );
+			printf( "Is it %s? ", current->data );
 			/*scanf( " %s", &userInput );*/
 
 			userInput = input();
@@ -116,7 +117,7 @@ int main()
 	if ( computer_wins )
 	{
 		/* Print victory message */
-		printf( "My, am I clever. :) Thanks for playing.\n" );
+		printf( "\nMy, am I clever.  :)\nThanks for playing.\n\n" );
 	}
 	else
 	{
@@ -131,16 +132,13 @@ int main()
 			printf( "A malloc has failed.\n" );
 			exit( 1 );
 		}
-
-		/* Add new animal and question nodes */
-		printf( "How disapointing.\n" );
-		printf( "What is it (with article)?\n" );
-
-		animalString = input();
-
-		if ( current != NULL )
+		else if ( current != NULL )
 		{
-			printf( "What is a yes/no question that will distinguish %s from %s \n", animalString, current->data );
+			/* Add new animal and question nodes */
+			printf( "\nHow disapointing.\n" );
+			printf( "What is it (with article)? " );
+			animalString = input();
+			printf( "What is a yes/no question that will distinguish %s from %s?\n? ", animalString, current->data );
 
 			newQuestion = input();
 			questNode->ID = current->ID;
@@ -148,9 +146,11 @@ int main()
 			questNode->data = newQuestion;
 			questNode->freePtr = newQuestion;
 
-			printf( "What is the answer to the question for %s?\n", animalString );
+			printf( "What is the answer to the question for %s? ", animalString );
 
 			answer = input();
+
+			printf( "\nI'll get it next time, I'm sure.\nThanks for playing.\n\n" );
 
 			if ( numNodes >= treeSize - 2 )
 			{
@@ -180,9 +180,14 @@ int main()
 			tree[numNodes] = animalNode;
 			numNodes++;
 
-			}
+			clearInput( answer );
+
+		}
 		else
 		{
+			printf( "\nWhat is it (with article)? " );
+			animalString = input();
+
 			animalNode->ID = 0;
 			animalNode->type = 'A';
 			animalNode->data = animalString;
