@@ -146,7 +146,7 @@ int main()
 			questNode->data = newQuestion;
 			questNode->freePtr = newQuestion;
 
-			printf( "What is the answer to the question for %s? ", animalString );
+			printf( "\nWhat is the answer to the question for %s? ", animalString );
 
 			answer = input();
 
