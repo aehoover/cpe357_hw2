@@ -271,7 +271,6 @@ void freeTree( Node *tree[], int numNodes )
 
 	for ( i = 0; i < numNodes; i++ )
 	{
-		/*free( &( tree[i]->data )[-2] );*/
 		if ( tree[i]->freePtr != NULL )
 		{
 			free( tree[i]->freePtr );

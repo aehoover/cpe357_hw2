@@ -195,6 +195,8 @@ int main()
 
 			tree[numNodes] = animalNode;
 			numNodes++;
+
+			free( questNode );
 		}
 	}
 
