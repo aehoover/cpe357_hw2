@@ -191,6 +191,7 @@ int main()
 			animalNode->ID = 0;
 			animalNode->type = 'A';
 			animalNode->data = animalString;
+			animalNode->freePtr = animalString;
 
 			tree[numNodes] = animalNode;
 			numNodes++;
